@@ -72,7 +72,7 @@ const CareNotes = () => {
   };
 
   return (
-    <div className='bg-white m-6 py-4 border-[1px] border-[#D1D5DB] rounded-md'>
+    <div className='bg-white mt-4 py-4 border-[1px] border-[#D1D5DB] rounded-md'>
       <div className='flex items-center justify-between px-6'>
         <div className='flex items-center gap-12'>
           <div className='flex flex-col gap-1'>

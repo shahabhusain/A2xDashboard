@@ -19,7 +19,7 @@ const ADLSection = () => {
   const adlOptions = ["Bathing", "Dressing", "Eating", "Toileting"];
 
   return (
-    <div className="p-4 bg-white mt-4 space-y-4">
+    <div className="p-4 w-full bg-white mt-4 space-y-4">
       {/* Inherit Checkbox */}
       <label className="flex items-center space-x-2">
         <input

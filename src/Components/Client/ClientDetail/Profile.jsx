@@ -59,9 +59,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Client Profile</h1>
-      
+    <div className=" mx-auto py-8">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Column */}
         <div className="w-full lg:w-1/2 space-y-6">
@@ -133,7 +131,7 @@ const Profile = () => {
       onClick={() => setFormData({ ...formData, gender: 'male' })}
       className={`px-4 w-full py-2 rounded-md border ${
         formData.gender === 'male'
-          ? 'bg-blue-600 text-white border-blue-600'
+          ? 'bg-[#487FFF] text-white border-[#487FFF]'
           : 'bg-white text-gray-700 border-gray-300'
       }`}
     >
@@ -144,7 +142,7 @@ const Profile = () => {
       onClick={() => setFormData({ ...formData, gender: 'female' })}
       className={`px-4 py-2 w-full rounded-md border ${
         formData.gender === 'female'
-          ? 'bg-blue-600 text-white border-blue-600'
+          ? 'bg-[#487FFF] text-white border-[#487FFF]'
           : 'bg-white text-gray-700 border-gray-300'
       }`}
     >
@@ -267,14 +265,14 @@ const Profile = () => {
                   />
                   <button
                     type="button"
-                    className="px-2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-4 py-2 bg-[#487FFF] text-white rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     Verify
                   </button>
 
                     <button
                     type="button"
-                    className="px-2 py-2 bg-[#4B5563] text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-2 py-2 bg-[#4B5563] text-white rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     Change / Fix
                   </button>
@@ -309,12 +307,22 @@ const Profile = () => {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-6 py-2 bg-[#487FFF] text-white rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   Mailing Labels
                 </button>
               </div>
             </div>
+          </div>
+           {/* Alternate Address  */}
+          <div className='bg-white rounded-lg shadow-md p-6 flex items-center justify-between'>
+                       <h2 className="text-xl font-semibold text-gray-800">Alternate Address</h2>
+                                       <button
+                  type="button"
+                  className="px-6 py-2 bg-[#487FFF] text-white rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Add
+                </button>
           </div>
           
           {/* Contact Information */}
@@ -642,7 +650,7 @@ const Profile = () => {
                       />
                       <button
                         type="button"
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="px-4 py-2 bg-[#487FFF] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         Verify
                       </button>
@@ -665,7 +673,7 @@ const Profile = () => {
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-6 py-2 bg-[#487FFF] text-white rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   Mailing Labels
                 </button>

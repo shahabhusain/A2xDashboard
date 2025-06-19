@@ -3,7 +3,9 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { BsCalendar3 } from "react-icons/bs";
 import { TbMessageCheck } from "react-icons/tb";
 import { Link } from 'react-router-dom';
-
+import icon1 from '../../assets/icon1.png'
+import icon2 from '../../assets/icon2.png'
+import icon3 from '../../assets/icon3.png'
 
 const Table = () => {
   const data = [
@@ -278,9 +280,9 @@ const Table = () => {
               <td className="p-2">{row.email}</td>
               <td className="p-2">{row.community}</td>
               <td className="p-2 flex items-center gap-2">
-                <Link to="/clientform" className="bg-[#487FFF2E] p-2 rounded-full text-[#487FFF] cursor-pointer"><IoPersonCircleOutline size={15} /></Link>
-                <button className="bg-[#45B3692E] p-2 rounded-full text-[#45B369] cursor-pointer"><BsCalendar3 size={15} /></button>
-                <button className="bg-[#F866242E] p-2 rounded-full text-[#EF4A00] cursor-pointer"><TbMessageCheck size={15} /></button>
+                <Link to="/clientform" className="bg-[#487FFF2E] p-2 rounded-full text-[#487FFF] cursor-pointer"> <img className=' w-[16px]' src={icon2} alt="" /></Link>
+                <button className="bg-[#45B3692E] p-2 rounded-full text-[#45B369] cursor-pointer"><img className=' w-[16px]'  src={icon1} alt="" /></button>
+                <button className="bg-[#F866242E] p-2 rounded-full text-[#EF4A00] cursor-pointer"><img className=' w-[16px]'  src={icon3} alt="" /></button>
               </td>
             </tr>
           ))}

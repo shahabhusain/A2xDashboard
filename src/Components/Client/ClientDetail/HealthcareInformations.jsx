@@ -116,8 +116,8 @@ const ADLTracker = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg">
+    <div className=" mt-4">
+      <div className=" bg-white rounded-lg shadow-lg">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h1 className="text-2xl font-semibold text-gray-800">

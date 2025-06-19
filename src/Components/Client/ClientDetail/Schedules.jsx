@@ -27,7 +27,7 @@ const Schedules = () => {
   };
 
   return (
-    <div className='bg-white m-6 py-4 border border-gray-300 rounded-md'>
+    <div className='bg-white  mt-4 py-4 border border-gray-300 rounded-md'>
       <div className='flex items-center justify-between px-6'>
         <div>
           <h1 className='text-[#111827] text-2xl font-semibold'>Current Schedules</h1>
@@ -54,8 +54,8 @@ const Schedules = () => {
           <table className="min-w-full border-gray-300 text-sm">
             <thead>
               <tr className="bg-[#545454] text-white text-center">
+                <th className="p-2">Name</th>
                 <th className="p-2">Week</th>
-                <th className="p-2">Caregiver</th>
                 <th className="p-2">Certified</th>
                 <th className="p-2">Action</th>
               </tr>

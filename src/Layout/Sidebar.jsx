@@ -22,7 +22,6 @@ import icon10 from '../assets/icon10.png';
 import icon11 from '../assets/icon11.png';
 import icon12 from '../assets/icon12.png';
 import icon13 from '../assets/icon13.png';
-import { FaHireAHelper, FaPagelines } from 'react-icons/fa';
 
 const Sidebar = ({ sidebarOpen }) => {
   const data = [
@@ -45,7 +44,7 @@ const Sidebar = ({ sidebarOpen }) => {
     <div
       className={`bg-white fixed h-screen border-r border-gray-200 shadow-sm 
         transition-all duration-300 ease-in-out
-        ${sidebarOpen ? 'w-[70px]' : 'w-[250px]'}`}
+        ${sidebarOpen ? 'w-[90px]' : 'w-[250px]'}`}
     >
       {/* Header */}
       <div className="flex items-center gap-3 px-5 py-6 border-b border-[#00000020] transition-all duration-300">
@@ -71,10 +70,15 @@ const Sidebar = ({ sidebarOpen }) => {
               `
             }
           >
-            <img src={item.icon} alt="" />
+           <img
+  src={item.icon}
+  alt=""
+  className={`transition-all duration-300 ${sidebarOpen ? "w-[22px] h-[22px]" : "w-[30px] h-[30px]"}`}
+/>
+
             <span
-              className={`transition-all duration-300 whitespace-nowrap
-              ${sidebarOpen ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}
+              className={`transition-all  duration-300 whitespace-nowrap
+              ${sidebarOpen ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto text-[16px]'}`}
             >
               {item.title}
             </span>
