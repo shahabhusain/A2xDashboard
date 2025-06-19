@@ -41,7 +41,7 @@ const stats = [
 
 const Dashboard = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 bg-gray-50">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 ">
       {stats.map((item, index) => (
         <div
           key={index}
