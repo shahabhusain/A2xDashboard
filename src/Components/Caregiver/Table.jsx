@@ -282,7 +282,7 @@ const Table = () => {
               <tr key={row.id} className="text-center hover:bg-gray-100">
                 <td className="p-2">{row.id}</td>
                 <td className="p-2 hover:text-blue-600 hover:underline cursor-pointer">
-                  <Link to="/clientform">{row.name}</Link>
+                  <Link to="/caregiverform">{row.name}</Link>
                 </td>
                 <td className="p-2">{row.status}</td>
                 <td className="p-2">{row.exStatus}</td>
@@ -294,7 +294,7 @@ const Table = () => {
                 <td className="p-2">{row.email}</td>
                 <td className="p-2">{row.community}</td>
                 <td className="p-2 flex items-center gap-2 justify-center">
-                  <Link to="/clientform" className="bg-[#487FFF2E] p-2 rounded-full">
+                  <Link to="/caregiverform" className="bg-[#487FFF2E] p-2 rounded-full">
                     <img className="w-[16px]" src={icon2} alt="" />
                   </Link>
                   <button className="bg-[#45B3692E] p-2 rounded-full">

@@ -60,11 +60,11 @@ const Profile = () => {
 
   return (
     <div className=" mx-auto py-8">
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-2">
         {/* Left Column */}
-        <div className="w-full lg:w-1/2 space-y-6">
+        <div className="w-full lg:w-1/2 space-y-2">
           {/* Personal Information */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Personal Information</h2>
             
             <div className="space-y-4">
@@ -86,7 +86,7 @@ const Profile = () => {
                 </div>
                 
                 <div className=' flex items-center gap-6'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">First Name*</label>
+                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">First Name<span className=' text-red-500'>*</span></label>
                   <input
                     type="text"
                     name="firstName"
@@ -100,7 +100,7 @@ const Profile = () => {
               
               <div className="grid grid-cols-1 gap-4">
                 <div className=' flex items-center gap-6'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Last Name*</label>
+                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Last Name<span className=' text-red-500'>*</span></label>
                   <input
                     type="text"
                     name="lastName"
@@ -124,7 +124,7 @@ const Profile = () => {
               </div>
               
              <div className="flex items-center gap-6">
-  <label className="w-[100px] block text-sm font-medium text-gray-700 mb-1">Gender</label>
+  <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Gender</label>
   <div className="flex flex-1 gap-4">
     <button
       type="button"
@@ -153,7 +153,7 @@ const Profile = () => {
 
               
               <div className='flex items-center gap-6'>
-                <label className="w-[90px] block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
                 <div className="grid flex-1 grid-cols-3 gap-3">
                   <div>
                     <input
@@ -205,12 +205,12 @@ const Profile = () => {
           </div>
           
           {/* Residential Address */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Residential Address</h2>
             
             <div className="space-y-4">
               <div className=' flex items-center gap-6'>
-                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Address*</label>
+                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Address<span className=' text-red-500'>*</span></label>
                 <input
                   type="text"
                   name="address"
@@ -223,7 +223,7 @@ const Profile = () => {
               
               <div className="grid grid-cols-1 gap-4">
                 <div className=' flex items-center gap-6'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">City*</label>
+                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">City<span className=' text-red-500'>*</span></label>
                   <input
                     type="text"
                     name="city"
@@ -235,7 +235,7 @@ const Profile = () => {
                 </div>
                 
                 <div className=' flex items-center gap-6'>
-                  <label className=" w-[120px] block text-sm font-medium text-gray-700 mb-1">State*</label>
+                  <label className=" w-[120px] block text-sm font-medium text-gray-700 mb-1">State<span className=' text-red-500'>*</span></label>
                   <select
                     name="state"
                     value={formData.state}
@@ -252,7 +252,7 @@ const Profile = () => {
               </div>
               
               <div className=' flex items-center gap-6'>
-                <label className="w-[90px] block text-sm font-medium text-gray-700 mb-1">Zip Code*</label>
+                <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Zip Code<span className=' text-red-500'>*</span></label>
                 <div className="flex flex-1 gap-2">
                   <input
                     type="text"
@@ -280,7 +280,7 @@ const Profile = () => {
               </div>
               
               <div className=' flex items-center gap-6'>
-                <label className="w-[90px] block text-sm font-medium text-gray-700 mb-1">Mobile App Geofence</label>
+                <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Mobile App Geofence</label>
                 <div className="flex flex-1 gap-2">
                   <select className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
                     <option>Select Status</option>
@@ -315,7 +315,7 @@ const Profile = () => {
             </div>
           </div>
            {/* Alternate Address  */}
-          <div className='bg-white rounded-lg shadow-md p-6 flex items-center justify-between'>
+          <div className='bg-white rounded-lg shadow-md p-3 flex items-center justify-between'>
                        <h2 className="text-xl font-semibold text-gray-800">Alternate Address</h2>
                                        <button
                   type="button"
@@ -326,7 +326,7 @@ const Profile = () => {
           </div>
           
           {/* Contact Information */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Contact Information</h2>
             
             <div className="space-y-4">
@@ -373,7 +373,7 @@ const Profile = () => {
               </div>
               
               <div className=' flex items-center gap-6'>
-                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Email Address*</label>
+                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Email Address<span className=' text-red-500'>*</span></label>
                 <input
                   type="email"
                   name="email"
@@ -396,7 +396,7 @@ const Profile = () => {
           </div>
 
           {/* Directions To Residence */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
                        <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Directions To Residence</h2>
                         <div className=' flex items-center gap-6'>
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">From</label>
@@ -412,7 +412,7 @@ const Profile = () => {
 
 
            {/* Directions To Residence */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
                        <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Pet Information</h2>
                         <div className=' flex flex-col gap-4'>
                                <div className=' flex items-center gap-6'>
@@ -451,9 +451,9 @@ const Profile = () => {
         </div>
         
         {/* Right Column */}
-        <div className="w-full lg:w-1/2 space-y-6">
+        <div className="w-full lg:w-1/2 space-y-2">
           {/* Status Information */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">A2Z Care Information</h2>
             
             <div className="space-y-4">
@@ -567,7 +567,7 @@ const Profile = () => {
        
           
           {/* Billing Address */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Billing Address</h2>
             
             <div className="space-y-4">
@@ -638,7 +638,7 @@ const Profile = () => {
                   </div>
                   
                   <div className=' flex items-center gap-6'>
-                    <label className="w-[90px] block text-sm font-medium text-gray-700 mb-1">Zip Code</label>
+                    <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Zip Code</label>
                     <div className="flex flex-1 gap-2">
                       <input
                         type="text"
@@ -682,11 +682,11 @@ const Profile = () => {
           </div>
 
              {/* Marital Information */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
                        <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Marital Information</h2>
                         <div className=' flex flex-col gap-4'>
                                <div className=' flex items-center gap-6'>
-                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <label className="w-[80px] block text-sm font-medium text-gray-700 mb-1">Name</label>
                      <input
                     //  type="tel"
                     //  name="phoneHome"
@@ -696,7 +696,7 @@ const Profile = () => {
                 />
                        </div>
                         <div className=' flex items-center gap-6'>
-                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Spouse</label>
+                <label className="w-[80px] block text-sm font-medium text-gray-700 mb-1">Spouse</label>
                      <input
                     //  type="tel"
                     //  name="phoneHome"
@@ -710,7 +710,7 @@ const Profile = () => {
           </div>
           
           {/* Characteristics */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Characteristics</h2>
             
             <div className="space-y-4">
@@ -732,7 +732,7 @@ const Profile = () => {
                 </div>
                 
                 <div className=' flex items-center gap-6'>
-                  <label className="w-[90px] block text-sm font-medium text-gray-700 mb-1">Height</label>
+                  <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Height</label>
                   <div className="flex flex-1">
                     <input
                       type="number"
@@ -794,7 +794,7 @@ const Profile = () => {
               
               <div className="grid grid-cols-1 gap-4">
                 <div className=' flex items-center gap-6'>
-                  <label className="w-[90px] block text-sm font-medium text-gray-700 mb-1">Advance Directive</label>
+                  <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Advance Directive</label>
                   <div className="flex space-x-4">
                     <label className="inline-flex items-center">
                       <input
@@ -816,7 +816,7 @@ const Profile = () => {
                 </div>
                 
                 <div className=' flex items-center gap-6'>
-                  <label className=" w-[90px] block text-sm font-medium text-gray-700 mb-1">DNR</label>
+                  <label className=" w-[94px] block text-sm font-medium text-gray-700 mb-1">DNR</label>
                   <div className="flex space-x-4">
                     <label className="inline-flex items-center">
                       <input

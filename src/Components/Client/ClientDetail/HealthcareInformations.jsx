@@ -12,16 +12,24 @@ const ADLTracker = () => {
     { id: 6, name: 'Clean Areas Used by Individual', type: 'activity' },
     { id: 7, name: 'Clean Kitchen/Wash Dishes', type: 'activity' },
     { id: 8, name: 'Complete/Partial Bath', type: 'activity' },
-    { id: 9, name: 'Did you observe any change in the individual\'s motional condition?', type: 'activity' },
+    { id: 9, name: 'Did you observe any change in the individual\'s emotional condition?', type: 'activity' },
     { id: 10, name: 'Did you observe any change in the individual\'s physical condition?', type: 'activity' },
     { id: 11, name: 'Desponsate serves vander about the individual\'s', type: 'activity' }
   ]);
 
   const [selections, setSelections] = useState({});
+  const [timeSelections, setTimeSelections] = useState({});
   const [frequencyFilter, setFrequencyFilter] = useState('Always');
 
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'All'];
   
+  const timeRanges = [
+    { label: 'Morning', time: '5 AM – 12 PM' },
+    { label: 'Afternoon', time: '12 PM – 6 PM' },
+    { label: 'Evening', time: '6 PM – 10 PM' },
+    { label: 'Night', time: '10 PM – 5 AM' }
+  ];
+
   const getDefaultSelection = (activityId, day) => {
     if (activityId === 7) return 'checked'; // Clean Kitchen/Wash Dishes has checkmarks
     if (activityId === 10) return 'empty'; // Physical condition change is empty
@@ -34,11 +42,31 @@ const ADLTracker = () => {
       ...prev,
       [key]: selectionType
     }));
+    
+    // Clear time selection if not specific time
+    if (selectionType !== 'specific') {
+      const timeKey = `${activityId}-${day}-time`;
+      setTimeSelections(prev => {
+        const newTimes = {...prev};
+        delete newTimes[timeKey];
+        return newTimes;
+      });
+    }
+  };
+
+  const handleTimeSelection = (activityId, day, time) => {
+    const key = `${activityId}-${day}-time`;
+    setTimeSelections(prev => ({
+      ...prev,
+      [key]: time
+    }));
   };
 
   const renderSelectionButton = (activityId, day) => {
     const key = `${activityId}-${day}`;
+    const timeKey = `${activityId}-${day}-time`;
     const currentSelection = selections[key] || getDefaultSelection(activityId, day);
+    const currentTime = timeSelections[timeKey];
     
     const baseClasses = "w-6 h-6 rounded-full border-2 cursor-pointer transition-all duration-200 hover:scale-110";
     
@@ -52,6 +80,9 @@ const ADLTracker = () => {
           nextSelection = 'checked';
           break;
         case 'checked':
+          nextSelection = 'specific';
+          break;
+        case 'specific':
           nextSelection = 'empty';
           break;
         default:
@@ -79,6 +110,40 @@ const ADLTracker = () => {
             </svg>
           </button>
         );
+      case 'specific':
+        return (
+          <div className="relative group">
+            <button
+              onClick={handleClick}
+              className={`${baseClasses} border-blue-500 bg-white flex items-center justify-center`}
+            >
+              <div className="w-2 h-2 rounded-full border border-blue-500"></div>
+            </button>
+            <div className="absolute left-0 mt-1 w-40 bg-white shadow-lg rounded-md z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div className="p-2">
+                <p className="text-xs text-gray-500 mb-1">Select time:</p>
+                {timeRanges.map((range, index) => (
+                  <div 
+                    key={index}
+                    className={`p-1 text-xs cursor-pointer hover:bg-blue-50 rounded ${currentTime === range.label ? 'bg-blue-100' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleTimeSelection(activityId, day, range.label);
+                    }}
+                  >
+                    <div className="font-medium">{range.label}</div>
+                    <div className="text-gray-500">{range.time}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {currentTime && (
+              <div className="absolute -bottom-5 left-0 text-xs text-gray-500 whitespace-nowrap">
+                {timeRanges.find(r => r.label === currentTime)?.label}
+              </div>
+            )}
+          </div>
+        );
       case 'empty':
       default:
         return (
@@ -90,7 +155,7 @@ const ADLTracker = () => {
     }
   };
 
-  const addNewActivity = () => {
+ const addNewActivity = () => {
     const newId = Math.max(...activities.map(a => a.id)) + 1;
     setActivities(prev => [...prev, {
       id: newId,
@@ -116,8 +181,8 @@ const ADLTracker = () => {
   );
 
   return (
-    <div className=" mt-4">
-      <div className=" bg-white rounded-lg shadow-lg">
+    <div className="mt-4">
+      <div className="bg-white rounded-lg shadow-lg">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h1 className="text-2xl font-semibold text-gray-800">
@@ -169,7 +234,9 @@ const ADLTracker = () => {
                   {days.map(day => (
                     <td key={day} className="text-center py-3 px-4">
                       {activity.type === 'activity' && (
-                        renderSelectionButton(activity.id, day)
+                        <div className="flex justify-center">
+                          {renderSelectionButton(activity.id, day)}
+                        </div>
                       )}
                     </td>
                   ))}

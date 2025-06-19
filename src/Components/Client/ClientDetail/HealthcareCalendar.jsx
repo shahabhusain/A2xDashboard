@@ -8,7 +8,8 @@ import ServiceBilling from './ServiceBilling';
 import ModificationForm from './Detail';
 import CardSection from './PersonalCareLegacy';
 import ADLSection from './ADLSection';
-import { FaEllipsisH, FaFileInvoiceDollar, FaInfoCircle, FaNotesMedical, FaStickyNote } from 'react-icons/fa';
+import { FaEyeSlash } from "react-icons/fa";
+import { IoSendSharp } from "react-icons/io5";
 import { FaRegCalendarAlt, FaDollarSign, FaTag, FaRegStickyNote, FaEllipsisV } from "react-icons/fa";
 const ScheduleCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -205,14 +206,23 @@ const ScheduleCalendar = () => {
             
             <div className="flex items-center gap-2">
                   <div className="flex items-center gap-2">
-              <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <Settings className="w-4 h-4" />
+              
+           
+              
+               <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <FaEyeSlash className="w-5 h-5 text-[#888B93]" />
+              </button>
+                 <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <Printer className="w-5 h-5 text-[#888B93]" />
+              </button>
+<button className="p-2 hover:bg-gray-100 rounded-lg">
+                <Mail className="w-5 h-5 text-[#888B93]" />
+              </button>
+                <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <IoSendSharp className="w-5 h-5 text-[#888B93]" />
               </button>
               <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <Printer className="w-4 h-4" />
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <Mail className="w-4 h-4" />
+                <Settings className="w-5 h-5 text-[#888B93]" />
               </button>
             </div>
               <button 
@@ -252,7 +262,7 @@ const ScheduleCalendar = () => {
               
               <button 
                 onClick={() => setCurrentDate(new Date())}
-                className="text-sm text-blue-600 hover:text-blue-800 ml-2"
+                className="text-sm cursor-pointer text-blue-600 hover:text-blue-800 ml-2"
               >
                 Today
               </button>
@@ -265,7 +275,7 @@ const ScheduleCalendar = () => {
           <div className="grid grid-cols-7 gap-px bg-[#efefef]">
             {/* Week day headers */}
             {weekDays.map(day => (
-              <div key={day} className="bg-white p-3 text-center text-sm font-medium text-gray-700">
+              <div key={day} className="bg-white p-3 text-center  font-bold text-[18px]  text-black">
                 {day}
               </div>
             ))}
@@ -306,22 +316,13 @@ const ScheduleCalendar = () => {
                               <span>{appointment.caregiver}</span>
                             </div>
                           )}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteAppointment(appointment.id);
-                            }}
-                            className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center"
-                          >
-                            <X className="w-2 h-2" />
-                          </button>
                         </div>
                       ))}
                     </div>
                     
                     <button
                       onClick={() => handleDateClick(day)}
-                      className="w-full text-xs text-gray-400 hover:text-gray-600 hover:bg-gray-50 p-1 rounded text-center mt-1 flex items-center justify-center gap-1"
+                      className="w-full cursor-pointer text-[14px] font-[600] text-gray-400 hover:text-gray-600 hover:bg-gray-50 p-1 rounded text-center mt-1 flex items-center justify-center gap-1"
                     >
                       <Plus className="w-3 h-3" />
                       Add Visit
@@ -393,96 +394,8 @@ const ScheduleCalendar = () => {
               </div>
             </div>
           ) : (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={`${monthNames[currentDate.getMonth()]} ${selectedDate}, ${currentDate.getFullYear()}`}
-                      readOnly
-                      className="w-full pl-8 pr-4 py-2 border rounded-lg bg-gray-50"
-                    />
-                    <CalendarIcon className="absolute left-2 top-2.5 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Service</label>
-                  <select
-                    value={visitForm.service}
-                    onChange={(e) => setVisitForm({...visitForm, service: e.target.value})}
-                    className="w-full pl-8 pr-4 py-2 border rounded-lg"
-                  >
-                    {services.map(service => (
-                      <option key={service} value={service}>{service}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
-                  <input
-                    type="time"
-                    value={visitForm.startTime}
-                    onChange={(e) => setVisitForm({...visitForm, startTime: e.target.value})}
-                    className="w-full pl-8 pr-4 py-2 border rounded-lg"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">End Time</label>
-                  <input
-                    type="time"
-                    value={visitForm.endTime}
-                    onChange={(e) => setVisitForm({...visitForm, endTime: e.target.value})}
-                    className="w-full pl-8 pr-4 py-2 border rounded-lg"
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Caregiver</label>
-                <select
-                  value={visitForm.caregiver}
-                  onChange={(e) => setVisitForm({...visitForm, caregiver: e.target.value})}
-                  className="w-full pl-8 pr-4 py-2 border rounded-lg"
-                >
-                  <option value="">Select Caregiver</option>
-                  {caregivers.map(caregiver => (
-                    <option key={caregiver} value={caregiver}>{caregiver}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                <textarea
-                  value={visitForm.notes}
-                  onChange={(e) => setVisitForm({...visitForm, notes: e.target.value})}
-                  className="w-full p-3 border rounded-lg"
-                  rows="3"
-                  placeholder="Add any notes about this visit..."
-                />
-              </div>
-              
-              <div className="flex justify-end gap-2 pt-4">
-                <button
-                  onClick={() => setShowAddVisit(false)}
-                  className="px-4 py-2 border rounded-lg hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleAddAppointment}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  Save Visit
-                </button>
-              </div>
+            <div>
+              <ModificationForm event={selectedEvent} />
             </div>
           )}
         </div>

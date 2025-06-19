@@ -205,7 +205,7 @@ const EnhancedCustomFields = () => {
                 {/* Export */}
                 <button
                   onClick={handleExport}
-                  className="flex items-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex items-center px-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Export
@@ -215,7 +215,7 @@ const EnhancedCustomFields = () => {
                 {/* Print */}
                 <button
                   onClick={handlePrint}
-                  className="flex items-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex items-center px-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <Printer className="w-4 h-4 mr-2" />
                   Print
@@ -224,7 +224,7 @@ const EnhancedCustomFields = () => {
                 {/* Bookmarks */}
                 <button
                   onClick={() => setShowBookmarks(!showBookmarks)}
-                  className="flex items-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex items-center px-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <Bookmark className="w-4 h-4 mr-2" />
                   Bookmarks
@@ -234,7 +234,7 @@ const EnhancedCustomFields = () => {
                 {/* Combine Categories */}
                 <button
                   onClick={() => setCombineCategories(!combineCategories)}
-                  className="flex items-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex items-center px-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   Combine Categories
                   <ChevronDown className="w-4 h-4 ml-1" />

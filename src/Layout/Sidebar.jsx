@@ -44,10 +44,9 @@ const Sidebar = ({ sidebarOpen }) => {
     <div
       className={`bg-white fixed h-screen border-r border-gray-200 shadow-sm 
         transition-all duration-300 ease-in-out
-        ${sidebarOpen ? 'w-[90px]' : 'w-[250px]'}`}
-    >
+        ${sidebarOpen ? 'w-[90px]' : 'w-[250px]'}`}>
       {/* Header */}
-      <div className="flex items-center gap-3 px-5 py-6 border-b border-[#00000020] transition-all duration-300">
+      <div className="flex items-center gap-3 px-5 py-2 border-b border-[#00000020] transition-all duration-300">
         <img src={logo} alt="logo" className="w-[40px]" />
         <h1
           className={`text-[15px] font-[600] text-[#111827] overflow-hidden transition-all duration-300
@@ -59,7 +58,7 @@ const Sidebar = ({ sidebarOpen }) => {
       </div>
 
       {/* Menu */}
-      <ul className="flex flex-col gap-2 p-3 overflow-y-auto h-[calc(100vh-80px)]">
+      <ul className="flex flex-col gap-2 p-3 overflow-y-auto ">
         {data.map((item, index) => (
           <NavLink
             to={item.link}
@@ -73,7 +72,7 @@ const Sidebar = ({ sidebarOpen }) => {
            <img
   src={item.icon}
   alt=""
-  className={`transition-all duration-300 ${sidebarOpen ? "w-[22px] h-[22px]" : "w-[30px] h-[30px]"}`}
+  className={`transition-all duration-300 ${sidebarOpen ? "w-[20px] h-[20px]" : "w-[15px] h-[15px]"}`}
 />
 
             <span
