@@ -1,5 +1,17 @@
 import React, { useState } from 'react'
 import { IoSearchOutline } from "react-icons/io5";
+import Profile from '../../Caregiver/CareGiverDetail/profile';
+import CertificateEvaluations from './CertificateEvaluations';
+import HealthcareCalendar from '../../Client/ClientDetail/HealthcareCalendar';
+import AvailabilityBlocks from './AvailabilityBlocks';
+import PayDetailsScreen from './PayDetailsScreen';
+import DocumentsScreen from './DocumentsScreen';
+import AttributesScreen from './AttributesScreen';
+import FormsScreen from './FormsScreen';
+import CustomFields from '../../Client/ClientDetail/CustomFields';
+import ContactForm from '../../Caregiver/CareGiverDetail/ContactForm';
+import PointsTable from './PointsTable';
+import EnhancedCustomFields from '../../Client/ClientDetail/EnhancedCustomFields';
 
 
 
@@ -33,11 +45,10 @@ const Head = () => {
         <button onClick={()=>setOpen(10)} className={` text-[12px] font-[500] py-1 px-3 rounded-full ${open === 10 ? "bg-[#487FFF] text-white" : "bg-[#F3F4F9] text-[#4B5563]"}`}>Emergency Contact</button>
         <button onClick={()=>setOpen(11)} className={` text-[12px] font-[500] py-1 px-3 rounded-full ${open === 11 ? "bg-[#487FFF] text-white" : "bg-[#F3F4F9] text-[#4B5563]"}`}>Points</button>
         <button onClick={()=>setOpen(12)} className={` text-[12px] font-[500] py-1 px-3 rounded-full ${open === 12 ? "bg-[#487FFF] text-white" : "bg-[#F3F4F9] text-[#4B5563]"}`}>Note List</button>
-        <button onClick={()=>setOpen(13)} className={` text-[12px] font-[500] py-1 px-3 rounded-full ${open === 13 ? "bg-[#487FFF] text-white" : "bg-[#F3F4F9] text-[#4B5563]"}`}>My Axis</button>
     </div>
     </div>
     {
-        open === 1 ? <>1</> : open === 2 ? <>2</> : open === 3 ? <>3</> : open === 4 ? <>4</>: open === 5 ? <>5</> : open === 6 ? <>6</> : open === 7 ? <>7</> : open === 8 ? <>8</> : open === 9 ? <>9</> : open === 10 ? <>10</> : open === 11 ? <>11</> : open === 12 ? <>12</> : open === 13 ? <>13</> : null
+        open === 1 ? <><Profile /></> : open === 2 ? <><HealthcareCalendar /></> : open === 3 ? <><CertificateEvaluations /></> : open === 4 ? <><AvailabilityBlocks /></>: open === 5 ? <><PayDetailsScreen /></> : open === 6 ? <><DocumentsScreen /></> : open === 7 ? <><AttributesScreen /></> : open === 8 ? <><FormsScreen /></> : open === 9 ? <><CustomFields /></> : open === 10 ? <><ContactForm /></> : open === 11 ? <><PointsTable /></> : open === 12 ? <><EnhancedCustomFields /></> : null
     }
        </div>
   )
