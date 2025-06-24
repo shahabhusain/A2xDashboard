@@ -22,6 +22,7 @@ import icon10 from '../assets/icon10.png';
 import icon11 from '../assets/icon11.png';
 import icon12 from '../assets/icon12.png';
 import icon13 from '../assets/icon13.png';
+import icon14 from '../assets/icon14.png';
 
 const Sidebar = ({ sidebarOpen }) => {
   const data = [
@@ -34,10 +35,11 @@ const Sidebar = ({ sidebarOpen }) => {
     { title: "Calls", link: "/calls", icon: icon7 },
     { title: "Alerts", link: "/alerts", icon: icon8 },
     { title: "Messaging", link: "/messaging", icon: icon9},
-    { title: "Telephony", link: "/telephony", icon: icon10 },
+    // { title: "Telephony", link: "/telephony", icon: icon10 },
     { title: "Payroll/Billing", link: "/payroll", icon: icon11},
-    { title: "Claims", link: "/claims", icon: icon12},
+    // { title: "Claims", link: "/claims", icon: icon12},
     { title: "Help", link: "/help", icon: icon13},
+    { title: "Email", link: "/email", icon: icon14},
   ];
 
   return (

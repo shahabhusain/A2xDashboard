@@ -21,6 +21,7 @@ import ForgetPassword from '../Pages/Auth/ForgetPassword'
 import Otp from '../Pages/Auth/Otp'
 import ResetPassword from '../Pages/Auth/ResetPassword'
 import CareGiverDetailForm from '../Pages/CareGiverDetailForm'
+import EmailInterface from '../Pages/EmailInterface'
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +41,7 @@ export const router = createBrowserRouter(
         <Route path='claims' element={<Claims />} />
         <Route path='help' element={<Help />} />
         <Route path='clientform' element={<ClientForm />} />
+         <Route path='email' element={<EmailInterface />} />
         <Route path='caregiverform' element={<CareGiverDetailForm />} />
       </Route>
 
