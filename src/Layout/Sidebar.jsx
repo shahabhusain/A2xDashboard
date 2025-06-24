@@ -23,6 +23,7 @@ import icon11 from '../assets/icon11.png';
 import icon12 from '../assets/icon12.png';
 import icon13 from '../assets/icon13.png';
 import icon14 from '../assets/icon14.png';
+import icon15 from '../assets/icon15.png';
 
 const Sidebar = ({ sidebarOpen }) => {
   const data = [
@@ -40,6 +41,7 @@ const Sidebar = ({ sidebarOpen }) => {
     // { title: "Claims", link: "/claims", icon: icon12},
     { title: "Help", link: "/help", icon: icon13},
     { title: "Email", link: "/email", icon: icon14},
+    { title: "Roles", link: "/roles", icon: icon15},
   ];
 
   return (
