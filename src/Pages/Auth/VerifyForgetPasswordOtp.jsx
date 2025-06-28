@@ -6,14 +6,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { axiosPublic } from '../../lib/axious';
 import { toast } from 'react-toastify';
 import { getToken } from '../../lib/auth';
+import { useGetCurrentUser } from '../../Api/authApi';
 
-const Otp = () => {
+const VerifyForgetPasswordOtp = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const inputsRef = useRef([]);
   const containerRef = useRef(null);
+  const user = useGetCurrentUser();
+  const email = user?.email;
 
   // Handle countdown for resend OTP
   useEffect(() => {
@@ -110,18 +113,13 @@ const Otp = () => {
       }
 
       const response = await axiosPublic.post(
-        "/auth/verify-login-otp",
-        { otp: fullOtp },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+        "/auth/verify-otp",
+        { otp: fullOtp, email: email },
       );
 
       if (response.data?.verified) {
         toast.success("OTP verified successfully!");
-        navigate("/");
+        navigate("/auth/resetpassword");
       } else {
         toast.error("Invalid OTP. Please try again.");
       }
@@ -143,7 +141,7 @@ const Otp = () => {
         return;
       }
 
-      await axiosPublic.post("/auth/resend-otp", {}, {
+      await axiosPublic.post("/auth/resend-otp", { email }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -178,7 +176,7 @@ const Otp = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900">Enter OTP</h2>
             <p className="text-gray-600">
-              Please enter the 6-digit code sent to your email
+              Please enter the 6-digit code sent to {email}
             </p>
           </div>
 
@@ -249,4 +247,4 @@ const Otp = () => {
   );
 };
 
-export default Otp;
+export default VerifyForgetPasswordOtp;

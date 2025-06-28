@@ -15,19 +15,24 @@ import {
   LiaEnvelopeSolid,
   LiaBellSolid,
 } from "react-icons/lia";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useGetCurrentUser } from '../Api/authApi';
 
 const Header = ({ sidebarOpen, setSidebarOpen }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const user = useGetCurrentUser()
 
   const toggleProfileDropdown = () => {
     setIsProfileOpen(!isProfileOpen);
   };
 
+  const navigate = useNavigate()
+
   const handleLogout = () => {
-    // Add your logout logic here
     console.log("User logged out");
     setIsProfileOpen(false);
+    // window.localStorage.clear()
+    navigate("auth/login")
   };
 
   return (
@@ -91,8 +96,8 @@ const Header = ({ sidebarOpen, setSidebarOpen }) => {
           {isProfileOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
               <div className="px-4 py-2 border-b border-gray-200">
-                <p className="text-sm font-medium text-gray-800">John Doe</p>
-                <p className="text-xs text-gray-500">john.doe@example.com</p>
+                <p className="text-sm font-medium text-gray-800">{user.name}</p>
+                <p className="text-xs text-gray-500">{user.email.slice(0,20)}...</p>
               </div>
               <Link to="/auth/login"
                 onClick={handleLogout}

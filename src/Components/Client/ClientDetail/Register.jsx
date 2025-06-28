@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { axiosPublic } from '../../../lib/axious';
-import { useGetCurrentUser } from '../../../Api/authApi';
 
-const Profile = ({ clientData }) => {
-  const user = useGetCurrentUser();
+const Register = () => {
   const [formData, setFormData] = useState({
-    // Initialize with empty/default values
-    client_id: '',
-    tenant_id: '',
+    // Personal Information
     title: '',
     firstName: '',
     lastName: '',
@@ -15,86 +12,39 @@ const Profile = ({ clientData }) => {
     gender: '',
     dob: { day: '', month: '', year: '' },
     a2zCareInfo: '',
+    
+    // Residential Address
     address: '',
     city: '',
     state: '',
     zipCode: '',
-    mobileAppGeofence: '',
-    overrideGeofenceRadius: '',
-    community: '',
+    
+    // Contact Information
     phoneHome: '',
     phoneOther: '',
     phoneMother: '',
     email: '',
-    sameAsResidential: true,
+    
+    // Billing Address
+    sameAsResidential: false,
     billingName: '',
     billingAddress: '',
     billingCity: '',
     billingState: '',
     billingZip: '',
     billingEmail: '',
+    
+    // Characteristics
     weight: '',
     height: { feet: '', inches: '' },
     language: '',
     hobbies: '',
-    allergies: '',
-    advanceDirective: false,
-    dnr: false
+    allergies: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-
-  // Initialize form data when clientData or user changes
-  useEffect(() => {
-    if (clientData && user) {
-      const dobDate = new Date(clientData.date_of_birth);
-      const dobDay = dobDate.getDate().toString();
-      const dobMonth = (dobDate.getMonth() + 1).toString();
-      const dobYear = dobDate.getFullYear().toString();
-
-      setFormData({
-        client_id: clientData._id,
-        tenant_id: user.tenantId,
-        title: clientData.title || '',
-        firstName: clientData.first_name || '',
-        lastName: clientData.last_name || '',
-        goesBy: clientData.goes_by || '',
-        gender: clientData.gender || '',
-        dob: { day: dobDay, month: dobMonth, year: dobYear },
-        a2zCareInfo: clientData.careInfo?.action_alerts || '',
-        address: clientData.residentialAddress?.address || '',
-        city: clientData.residentialAddress?.city || '',
-        state: clientData.residentialAddress?.residential_state || '',
-        zipCode: clientData.residentialAddress?.residential_zipCode || '',
-        mobileAppGeofence: clientData.residentialAddress?.mobile_app_geofence || '',
-        overrideGeofenceRadius: clientData.residentialAddress?.override_geofence_radius || '',
-        community: clientData.residentialAddress?.community || '',
-        phoneHome: clientData.contact?.phone_home || '',
-        phoneOther: clientData.contact?.phone_other || '',
-        phoneMother: clientData.contact?.phone_mobile || '',
-        email: clientData.contact?.email || '',
-        sameAsResidential: true,
-        billingName: clientData.billing_address?.name || '',
-        billingAddress: clientData.billing_address?.address || '',
-        billingCity: clientData.billing_address?.city || '',
-        billingState: clientData.billing_address?.alternate_state || '',
-        billingZip: clientData.billing_address?.alternate_zipCode || '',
-        billingEmail: clientData.billing_address?.email || '',
-        weight: clientData.characteristics?.weight || '',
-        height: {
-          feet: clientData.characteristics?.height?.feet || '',
-          inches: clientData.characteristics?.height?.inches || ''
-        },
-        language: clientData.characteristics?.language_spoken || '',
-        hobbies: clientData.characteristics?.hobbies || '',
-        allergies: clientData.characteristics?.allergies || '',
-        advanceDirective: clientData.characteristics?.advance_directive || false,
-        dnr: clientData.characteristics?.dnr || false
-      });
-    }
-  }, [clientData, user]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -114,81 +64,126 @@ const Profile = ({ clientData }) => {
     }));
   };
 
+  const transformFormDataToApiFormat = () => {
+    return {
+      title: formData.title,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      goes_by: formData.goesBy,
+      gender: formData.gender,
+      date_of_birth: `${formData.dob.year}-${formData.dob.month.padStart(2, '0')}-${formData.dob.day.padStart(2, '0')}T00:00:00.000Z`,
+      
+      residentialAddress: {
+        name: formData.firstName + ' ' + formData.lastName,
+        address: formData.address,
+        city: formData.city,
+        residential_state: formData.state,
+        residential_zipCode: formData.zipCode,
+        mobile_app_geofence: "Enabled",
+        override_geofence_radius: "100m",
+        community: "Sunset Villas"
+      },
+
+      alternateAddresses: [], // You can add logic to populate this from your form
+
+      contact: {
+        phone_home: formData.phoneHome,
+        phone_other: formData.phoneOther,
+        phone_mobile: formData.phoneMother,
+        mobile_opt_out: "false",
+        telephony_phone: formData.phoneHome,
+        email: formData.email,
+        email_opt_out: "false",
+        send_now: "yes"
+      },
+
+      directions_to_residence: {
+        from: "" // Add this field if you collect it in your form
+      },
+
+      pets: [], // Add pet data if collected in your form
+
+      careInfo: {
+        status: "Active", // Make dynamic if needed
+        lead_created_date: new Date().toISOString(),
+        initial_assessment_date: new Date().toISOString(),
+        start_date: new Date().toISOString(),
+        effective_date: new Date().toISOString(),
+        administrator: "Jane Admin", // Make dynamic
+        region_code: "WEST01", // Make dynamic
+        preferred_by: "Friend Referral", // Make dynamic
+        medicaid_number: "MCD-123456789", // Make dynamic
+        preferred_caregiver: "Emily Caregiver", // Make dynamic
+        action_alerts: formData.allergies || "None",
+        invoicing_id: "INV-555999" // Make dynamic
+      },
+
+      billing_address: {
+        name: formData.sameAsResidential ? formData.firstName + ' ' + formData.lastName : formData.billingName,
+        address: formData.sameAsResidential ? formData.address : formData.billingAddress,
+        city: formData.sameAsResidential ? formData.city : formData.billingCity,
+        alternate_state: formData.sameAsResidential ? formData.state : formData.billingState,
+        alternate_zipCode: formData.sameAsResidential ? formData.zipCode : formData.billingZip,
+        email: formData.sameAsResidential ? formData.email : formData.billingEmail
+      },
+
+      marital: {
+        marital_status: "Married", // Add to form if needed
+        spouse_name: "Jane Doe" // Add to form if needed
+      },
+
+      characteristics: {
+        weight: parseInt(formData.weight) || 0,
+        height: {
+          feet: parseInt(formData.height.feet) || 0,
+          inches: parseInt(formData.height.inches) || 0
+        },
+        language_spoken: formData.language,
+        occupation: "Engineer", // Add to form if needed
+        job_title: "Software Engineer", // Add to form if needed
+        hobbies: formData.hobbies,
+        triage_level: "2", // Add to form if needed
+        advance_directive: true,
+        dnr: false,
+        allergies: formData.allergies || "None",
+        will_to_live: true
+      },
+
+      isDeleted: false
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError(null);
     setSubmitSuccess(false);
-    
-    try {
-      // Prepare the data for API
-      const apiData = {
-        client_id: formData.client_id,
-        tenant_id: formData.tenant_id,
-        title: formData.title,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        goes_by: formData.goesBy,
-        gender: formData.gender,
-        date_of_birth: `${formData.dob.year}-${formData.dob.month.padStart(2, '0')}-${formData.dob.day.padStart(2, '0')}`,
-        residentialAddress: {
-          address: formData.address,
-          city: formData.city,
-          residential_state: formData.state,
-          residential_zipCode: formData.zipCode,
-          mobile_app_geofence: formData.mobileAppGeofence,
-          override_geofence_radius: formData.overrideGeofenceRadius,
-          community: formData.community
-        },
-        contact: {
-          phone_home: formData.phoneHome,
-          phone_other: formData.phoneOther,
-          phone_mobile: formData.phoneMother,
-          email: formData.email
-        },
-        billing_address: {
-          name: formData.billingName,
-          address: formData.billingAddress,
-          city: formData.billingCity,
-          alternate_state: formData.billingState,
-          alternate_zipCode: formData.billingZip,
-          email: formData.billingEmail
-        },
-        characteristics: {
-          weight: formData.weight,
-          height: {
-            feet: formData.height.feet,
-            inches: formData.height.inches
-          },
-          language_spoken: formData.language,
-          hobbies: formData.hobbies,
-          allergies: formData.allergies,
-          advance_directive: formData.advanceDirective,
-          dnr: formData.dnr
-        }
-      };
 
-      const response = await axiosPublic.patch("/clients/update-client", apiData);
+    try {
+      const apiData = transformFormDataToApiFormat();
+      const response = await axiosPublic.post('/clients/register-client', apiData, {
+      });
+      console.log('API Response:', response.data);
+      setSubmitSuccess(true);
       
-      if (response.data && response.data.success) {
-        setSubmitSuccess(true);
-      } else {
-        throw new Error(response.data?.message || 'Failed to update client');
-      }
     } catch (error) {
-      console.error('Update error:', error);
-      setSubmitError(error.response?.data?.message || error.message || 'Failed to save profile. Please try again.');
+      console.error('API Error:', error);
+      setSubmitError(error.response?.data?.message || 'Failed to save profile. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (!clientData) {
-    return <div>Loading client data...</div>;
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="mx-auto py-8">
+       <div>
+
+<div className='bg-white my-6 mx-4 py-4 px-4 border-[1px] border-[#D1D5DB] rounded-md'>
+        <h1 className='text-[#111827] text-[24px] font-[600]'>Register Clients</h1>
+    </div>
+
+
+
+        <form onSubmit={handleSubmit} className="mx-auto pb-8 px-4">
       <div className="flex flex-col lg:flex-row gap-2">
         {/* Left Column */}
         <div className="w-full lg:w-1/2 space-y-2">
@@ -206,6 +201,7 @@ const Profile = ({ clientData }) => {
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   >
+                    <option value="">Select</option>
                     <option value="Mr">Mr</option>
                     <option value="Mrs">Mrs</option>
                     <option value="Ms">Ms</option>
@@ -370,8 +366,10 @@ const Profile = ({ clientData }) => {
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="CA">California</option>
-                    {/* Add other states as needed */}
+                    <option value="">Select State</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    {/* Add all other states */}
                   </select>
                 </div>
               </div>
@@ -394,26 +392,26 @@ const Profile = ({ clientData }) => {
                   >
                     Verify
                   </button>
+
+                  <button
+                    type="button"
+                    className="px-2 py-2 bg-[#4B5563] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    Change / Fix
+                  </button>
                 </div>
               </div>
               
               <div className='flex items-center gap-6'>
                 <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Mobile App Geofence</label>
                 <div className="flex flex-1 gap-2">
-                  <select 
-                    name="mobileAppGeofence"
-                    value={formData.mobileAppGeofence}
-                    onChange={handleChange}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="Enabled">Enabled</option>
-                    <option value="Disabled">Disabled</option>
+                  <select className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    <option>Select Status</option>
+                    <option>Active</option>
+                    <option>Inactive</option>
                   </select>
                   <input
                     type="text"
-                    name="overrideGeofenceRadius"
-                    value={formData.overrideGeofenceRadius}
-                    onChange={handleChange}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Radius"
                   />
@@ -422,78 +420,33 @@ const Profile = ({ clientData }) => {
               
               <div className='flex items-center gap-6'>
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Community</label>
-                <input
-                  type="text"
-                  name="community"
-                  value={formData.community}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                />
+                <select className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                  <option>Select Community</option>
+                  <option>Community 1</option>
+                  <option>Community 2</option>
+                </select>
+              </div>
+              
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="px-6 py-2 bg-[#487FFF] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Mailing Labels
+                </button>
               </div>
             </div>
           </div>
           
           {/* Alternate Address */}
-          <div className='bg-white rounded-lg shadow-md p-3'>
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Alternate Addresses</h2>
-            {clientData.alternateAddresses.map((address, index) => (
-              <div key={index} className="mb-4 p-3 border rounded-lg">
-                <div className='flex items-center gap-6 mb-2'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700">Name</label>
-                  <input
-                    type="text"
-                    value={address.name}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                  />
-                </div>
-                <div className='flex items-center gap-6 mb-2'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700">Address</label>
-                  <input
-                    type="text"
-                    value={address.address}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                  />
-                </div>
-                <div className='flex items-center gap-6 mb-2'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700">City</label>
-                  <input
-                    type="text"
-                    value={address.city}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                  />
-                </div>
-                <div className='flex items-center gap-6 mb-2'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700">State</label>
-                  <input
-                    type="text"
-                    value={address.alternate_state}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                  />
-                </div>
-                <div className='flex items-center gap-6 mb-2'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700">Zip Code</label>
-                  <input
-                    type="text"
-                    value={address.alternate_zipCode}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                  />
-                </div>
-                <div className='flex items-center gap-6'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700">Email</label>
-                  <input
-                    type="text"
-                    value={address.email}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                  />
-                </div>
-              </div>
-            ))}
+          <div className='bg-white rounded-lg shadow-md p-3 flex items-center justify-between'>
+            <h2 className="text-xl font-semibold text-gray-800">Alternate Address</h2>
+            <button
+              type="button"
+              className="px-6 py-2 bg-[#487FFF] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Add
+            </button>
           </div>
           
           {/* Contact Information */}
@@ -524,7 +477,7 @@ const Profile = ({ clientData }) => {
               </div>
               
               <div className='flex items-center gap-6'>
-                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Phone (Mobile)</label>
+                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Phone (Mother)</label>
                 <input
                   type="tel"
                   name="phoneMother"
@@ -538,9 +491,8 @@ const Profile = ({ clientData }) => {
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Mobile Opt Out</label>
                 <input
                   type="text"
-                  value={clientData.contact.mobile_opt_out === "false" ? "No" : "Yes"}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="What NOT to receive"
                 />
               </div>
               
@@ -560,9 +512,8 @@ const Profile = ({ clientData }) => {
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Email Opt Out</label>
                 <input
                   type="text"
-                  value={clientData.contact.email_opt_out === "false" ? "No" : "Yes"}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="What NOT to receive"
                 />
               </div>
             </div>
@@ -573,10 +524,8 @@ const Profile = ({ clientData }) => {
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Directions To Residence</h2>
             <div className='flex items-center gap-6'>
               <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">From</label>
-              <textarea
-                value={clientData.directions_to_residence.from}
-                readOnly
-                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+              <input
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
@@ -585,16 +534,24 @@ const Profile = ({ clientData }) => {
           <div className="bg-white rounded-lg shadow-md p-3">
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Pet Information</h2>
             <div className='flex flex-col gap-4'>
-              {clientData.pets.map((pet, index) => (
-                <div key={index} className='flex items-center gap-6'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Pet #{index + 1}</label>
-                  <input
-                    value={pet.name}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                  />
-                </div>
-              ))}
+              <div className='flex items-center gap-6'>
+                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Pet#1</label>
+                <input
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div className='flex items-center gap-6'>
+                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Pet#2</label>
+                <input
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div className='flex items-center gap-6'>
+                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Pet#3</label>
+                <input
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -608,31 +565,28 @@ const Profile = ({ clientData }) => {
             <div className="space-y-4">
               <div className='flex items-center gap-6'>
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <input
-                  value={clientData.careInfo.status}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                />
+                <select className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                  <option>Select Status</option>
+                  <option>Active</option>
+                  <option>Inactive</option>
+                  <option>Pending</option>
+                </select>
               </div>
               
               <div className="grid grid-cols-1 gap-4">
                 <div className='flex items-center gap-6'>
                   <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Lead Created Date</label>
                   <input
-                    type="text"
-                    value={new Date(clientData.careInfo.lead_created_date).toLocaleDateString()}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                    type="date"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 
                 <div className='flex items-center gap-6'>
                   <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Initial Assessment Date</label>
                   <input
-                    type="text"
-                    value={new Date(clientData.careInfo.initial_assessment_date).toLocaleDateString()}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                    type="date"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -641,61 +595,52 @@ const Profile = ({ clientData }) => {
                 <div className='flex items-center gap-6'>
                   <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                   <input
-                    type="text"
-                    value={new Date(clientData.careInfo.start_date).toLocaleDateString()}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                    type="date"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
                 
                 <div className='flex items-center gap-6'>
-                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Effective Date</label>
+                  <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Effective End Date</label>
                   <input
-                    type="text"
-                    value={new Date(clientData.careInfo.effective_date).toLocaleDateString()}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                    type="date"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
               
               <div className='flex items-center gap-6'>
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Administrator</label>
-                <input
-                  type="text"
-                  value={clientData.careInfo.administrator}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                />
+                <select className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                  <option>Select Administrator</option>
+                  <option>Admin 1</option>
+                  <option>Admin 2</option>
+                </select>
               </div>
               
               <div className='flex items-center gap-6'>
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Region Code</label>
-                <input
-                  type="text"
-                  value={clientData.careInfo.region_code}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                />
+                <select className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                  <option>Select Region</option>
+                  <option>Region 1</option>
+                  <option>Region 2</option>
+                </select>
               </div>
               
               <div className='flex items-center gap-6'>
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Preferred By</label>
-                <input
-                  type="text"
-                  value={clientData.careInfo.preferred_by}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                />
+                <select className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                  <option>Select Option</option>
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                </select>
               </div>
               
               <div className='flex items-center gap-6'>
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Medicaid Number</label>
                 <input
                   type="text"
-                  value={clientData.careInfo.medicaid_number}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               
@@ -703,19 +648,15 @@ const Profile = ({ clientData }) => {
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Preferred Caregiver</label>
                 <input
                   type="text"
-                  value={clientData.careInfo.preferred_caregiver}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               
               <div className='flex items-center gap-6'>
-                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Action Alerts</label>
+                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Admin Alerts</label>
                 <input
                   type="text"
-                  value={clientData.careInfo.action_alerts}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               
@@ -723,9 +664,7 @@ const Profile = ({ clientData }) => {
                 <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Invoicing ID</label>
                 <input
                   type="text"
-                  value={clientData.careInfo.invoicing_id}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -794,8 +733,10 @@ const Profile = ({ clientData }) => {
                         onChange={handleChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                       >
-                        <option value="CA">California</option>
-                        {/* Add other states as needed */}
+                        <option value="">Select State</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        {/* Add all other states */}
                       </select>
                     </div>
                   </div>
@@ -832,6 +773,15 @@ const Profile = ({ clientData }) => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
+              
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="px-6 py-2 bg-[#487FFF] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Mailing Labels
+                </button>
+              </div>
             </div>
           </div>
 
@@ -840,19 +790,15 @@ const Profile = ({ clientData }) => {
             <h2 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Marital Information</h2>
             <div className='flex flex-col gap-4'>
               <div className='flex items-center gap-6'>
-                <label className="w-[80px] block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <label className="w-[80px] block text-sm font-medium text-gray-700 mb-1">Name</label>
                 <input
-                  value={clientData.marital.marital_status}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
               <div className='flex items-center gap-6'>
                 <label className="w-[80px] block text-sm font-medium text-gray-700 mb-1">Spouse</label>
                 <input
-                  value={clientData.marital.spouse_name}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
@@ -912,28 +858,11 @@ const Profile = ({ clientData }) => {
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 >
+                  <option value="">Select Language</option>
                   <option value="English">English</option>
                   <option value="Spanish">Spanish</option>
                   <option value="French">French</option>
                 </select>
-              </div>
-              
-              <div className='flex items-center gap-6'>
-                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Occupation</label>
-                <input
-                  value={clientData.characteristics.occupation}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                />
-              </div>
-              
-              <div className='flex items-center gap-6'>
-                <label className="w-[120px] block text-sm font-medium text-gray-700 mb-1">Job Title</label>
-                <input
-                  value={clientData.characteristics.job_title}
-                  readOnly
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                />
               </div>
               
               <div className='flex items-center gap-6'>
@@ -966,8 +895,6 @@ const Profile = ({ clientData }) => {
                       <input
                         type="radio"
                         name="advanceDirective"
-                        checked={formData.advanceDirective}
-                        onChange={() => setFormData({...formData, advanceDirective: true})}
                         className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                       />
                       <span className="ml-2 text-gray-700">Yes</span>
@@ -976,8 +903,6 @@ const Profile = ({ clientData }) => {
                       <input
                         type="radio"
                         name="advanceDirective"
-                        checked={!formData.advanceDirective}
-                        onChange={() => setFormData({...formData, advanceDirective: false})}
                         className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                       />
                       <span className="ml-2 text-gray-700">No</span>
@@ -992,8 +917,6 @@ const Profile = ({ clientData }) => {
                       <input
                         type="radio"
                         name="dnr"
-                        checked={formData.dnr}
-                        onChange={() => setFormData({...formData, dnr: true})}
                         className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                       />
                       <span className="ml-2 text-gray-700">Yes</span>
@@ -1002,22 +925,11 @@ const Profile = ({ clientData }) => {
                       <input
                         type="radio"
                         name="dnr"
-                        checked={!formData.dnr}
-                        onChange={() => setFormData({...formData, dnr: false})}
                         className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                       />
                       <span className="ml-2 text-gray-700">No</span>
                     </label>
                   </div>
-                </div>
-                
-                <div className='flex items-center gap-6'>
-                  <label className="w-[94px] block text-sm font-medium text-gray-700 mb-1">Will to Live</label>
-                  <input
-                    value={clientData.characteristics.will_to_live ? "Yes" : "No"}
-                    readOnly
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-                  />
                 </div>
               </div>
             </div>
@@ -1028,11 +940,16 @@ const Profile = ({ clientData }) => {
       {/* Form Actions and Status Messages */}
       <div className="mt-6 flex flex-col items-end space-y-4">
         {submitError && (
-          <div className="w-full p-4 bg-green-100 text-green-700 rounded-md">
+          <div className="w-full p-4 bg-red-100 text-red-700 rounded-md">
             {submitError}
           </div>
         )}
-      
+        
+        {submitSuccess && (
+          <div className="w-full p-4 bg-green-100 text-green-700 rounded-md">
+            Profile saved successfully!
+          </div>
+        )}
         
         <div className="flex space-x-3">
           <button
@@ -1053,7 +970,8 @@ const Profile = ({ clientData }) => {
         </div>
       </div>
     </form>
+       </div>
   );
 };
 
-export default Profile;
+export default Register;

@@ -24,6 +24,8 @@ import CareGiverDetailForm from '../Pages/CareGiverDetailForm'
 import EmailInterface from '../Pages/EmailInterface'
 import ProfilePage from '../Pages/ProfilePage'
 import ProfilePageDetail from '../Pages/ProfilePageDetail'
+import Register from '../Components/Client/ClientDetail/Register'
+import VerifyForgetPasswordOtp from '../Pages/Auth/VerifyForgetPasswordOtp'
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +33,7 @@ export const router = createBrowserRouter(
       <Route path='/' element={<Layout />}>
         <Route index element={<Dashboard />} />
         <Route path='client' element={<Client />} />
+        <Route path='register' element={<Register />} />
         <Route path='caregiver' element={<Caregiver />} />
         <Route path='scheduling' element={<Scheduling />} />
         <Route path='marketing' element={<Marketing />} />
@@ -53,6 +56,7 @@ export const router = createBrowserRouter(
         <Route path='login' element={<Login />} />
         <Route path='forgot' element={<ForgetPassword />} />
         <Route path='otp' element={<Otp />} />
+        <Route path='verifyotp' element={<VerifyForgetPasswordOtp />} />
         <Route path='resetpassword' element={<ResetPassword />} />
       </Route>
     </>

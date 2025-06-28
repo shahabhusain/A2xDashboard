@@ -1,5 +1,6 @@
 import React from 'react'
 import { FaSearch } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 const Header = ({title}) => {
   return (
@@ -12,7 +13,7 @@ const Header = ({title}) => {
                         <input type="text" placeholder='search' className=' focus:text-[#111827] focus:text-[15px] focus:font-[500] placeholder:text-[#111827]  focus:outline-none ' />
                        
          </div>
-          <button className=' text-[16px] font-[500] text-white bg-[#487FFF] py-2 px-6 rounded-md'>+ Add New User</button>
+          <Link to="/register" className=' text-[16px] font-[500] text-white bg-[#487FFF] py-2 px-6 rounded-md'>+ Add New User</Link>
           </div>
     </div>
   )
